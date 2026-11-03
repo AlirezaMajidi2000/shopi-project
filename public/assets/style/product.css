@@ -1,0 +1,296 @@
+/* font */
+
+@font-face{
+    font-family: 'vazir';
+    src: url('../font/Vazir.ttf');
+}
+
+.font_vazir{
+    font-family: 'vazir';
+}
+
+@font-face{
+    font-family: 'saleh';
+    src: url('../font/Saleh-Extra.ttf');
+}
+
+.font_saleh{
+    font-family: 'saleh';
+}
+
+/* font */
+
+*{
+    box-sizing: border-box;
+}
+
+/* colors */
+
+:root{
+    --primary: #3882f6;
+    --secondary: #6366f1;
+    --success: #108881;
+    --warning: #f59e08;
+    --danger: #ef4444;
+    --text-primary: #111b27;
+    --text-secondary: #6b7280;
+    --background: #f8fafc;
+    --surface: #fff;
+    --border: #e5e7e8;
+}
+
+/* colors */
+
+/* container */
+
+.my_container{
+    width: 90%;
+    margin: 0 auto;
+    background-color: var(--surface);
+}
+
+/* container */
+
+a{
+    text-decoration: none;
+}
+
+
+/* =========================
+   Font
+========================= */
+
+@font-face {
+    font-family: 'vazir';
+    src: url('../font/Vazir.ttf');
+}
+
+@font-face {
+    font-family: 'saleh';
+    src: url('../font/Saleh-Extra.ttf');
+}
+
+.font_vazir {
+    font-family: 'vazir';
+}
+
+.font_saleh {
+    font-family: 'saleh';
+}
+
+/* =========================
+   Global
+========================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary: #3882f6;
+    --secondary: #6366f1;
+    --success: #108881;
+    --warning: #f59e08;
+    --danger: #ef4444;
+    --text-primary: #111b27;
+    --text-secondary: #6b7280;
+    --background: #f8fafc;
+    --surface: #fff;
+    --border: #e5e7e8;
+}
+
+body {
+    direction: rtl;
+    background-color: var(--background);
+    color: var(--text-primary);
+    font-family: 'vazir', sans-serif;
+    min-height: 100vh;
+    padding: 60px 20px;
+}
+
+/* =========================
+   Product Card
+========================= */
+
+.card {
+    width: 100%;
+    max-width: 1100px;
+    min-height: 430px;
+    margin: 0 auto 30px;
+    padding: 35px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: 0 10px 35px rgba(17, 27, 39, 0.06);
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 45px;
+}
+
+/* =========================
+   Product Image
+========================= */
+
+.card img {
+    width: 100%;
+    height: 360px;
+    object-fit: contain;
+    padding: 20px;
+    background-color: #f8fafc;
+    border-radius: 16px;
+    transition: transform 0.3s ease;
+}
+
+.card img:hover {
+    transform: scale(1.04);
+}
+
+/* =========================
+   Product Information
+========================= */
+
+.title {
+    font-family: 'saleh', 'vazir', sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 1.8;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
+.price {
+    display: inline-block;
+    color: var(--primary);
+    background-color: rgba(56, 130, 246, 0.09);
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.description {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 2.5;
+    text-align: justify;
+}
+
+/* =========================
+   Back Button
+========================= */
+
+.back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    width: fit-content;
+    margin: 0 auto;
+    padding: 13px 25px;
+
+    background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    color: #fff;
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: 'vazir', sans-serif;
+
+    transition: all 0.3s ease;
+}
+
+.back:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(56, 130, 246, 0.25);
+}
+
+.back i {
+    font-size: 14px;
+}
+
+/* =========================
+   Responsive - Tablet
+========================= */
+
+@media (max-width: 768px) {
+
+    body {
+        padding: 35px 18px;
+    }
+
+    .card {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        padding: 25px;
+    }
+
+    .card img {
+        height: 300px;
+    }
+
+    .title {
+        font-size: 25px;
+        margin-bottom: 15px;
+    }
+
+    .price {
+        font-size: 18px;
+        margin-bottom: 18px;
+    }
+
+    .description {
+        font-size: 14px;
+        line-height: 2.3;
+    }
+}
+
+/* =========================
+   Responsive - Mobile
+========================= */
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 20px 12px;
+    }
+
+    .card {
+        padding: 17px;
+        gap: 20px;
+        border-radius: 16px;
+    }
+
+    .card img {
+        height: 230px;
+        padding: 10px;
+    }
+
+    .title {
+        font-size: 21px;
+    }
+
+    .price {
+        font-size: 16px;
+        padding: 10px 14px;
+    }
+
+    .description {
+        font-size: 13px;
+        line-height: 2.2;
+    }
+
+    .back {
+        width: 100%;
+        padding: 12px;
+        font-size: 13px;
+    }
+}

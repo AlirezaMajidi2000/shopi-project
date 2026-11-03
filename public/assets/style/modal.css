@@ -1,0 +1,295 @@
+/* font */
+
+@font-face{
+    font-family: 'vazir';
+    src: url('../font/Vazir.ttf');
+}
+
+.font_vazir{
+    font-family: 'vazir';
+}
+
+@font-face{
+    font-family: 'saleh';
+    src: url('../font/Saleh-Extra.ttf');
+}
+
+.font_saleh{
+    font-family: 'saleh';
+}
+
+/* font */
+
+*{
+    box-sizing: border-box;
+}
+
+/* colors */
+
+:root{
+    --primary: #3882f6;
+    --secondary: #6366f1;
+    --success: #108881;
+    --warning: #f59e08;
+    --danger: #ef4444;
+    --text-primary: #111b27;
+    --text-secondary: #6b7280;
+    --background: #f8fafc;
+    --surface: #fff;
+    --border: #e5e7e8;
+}
+
+/* colors */
+
+/* container */
+
+.my_container{
+    width: 90%;
+    margin: 0 auto;
+    background-color: var(--surface);
+    
+}
+
+/* container */
+
+a{
+    text-decoration: none;
+}
+
+/* start modal */
+
+.modal_box{
+    background-color: var(--surface);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 0px;
+}
+
+.check{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.check_box{
+    background-color: var(--success);
+    color: var(--surface);
+    padding: 20px;
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 20px 0px;
+}
+
+.modal_text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal_text span{
+    font-weight: bolder;
+    margin-top: 20px;
+    color: var(--text-primary);
+}
+
+.modal_text p{
+    color: var(--text-secondary);
+    width: 60%;
+}
+
+.modal_btn_box{
+    width: 30%;
+}
+
+.modal_btn{
+    width: 100%;
+    border-radius: 10px;
+}
+
+.modal_box a{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    background-color: var(--surface);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'vazir';
+    transition-duration: 0.5s;
+}
+
+.modal_box a:hover{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--surface);
+    color: var(--surface);
+    background-color: var(--primary);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'vazir';
+}
+
+.modal_box a i{
+    margin-left: 5px;
+}
+
+/* end modal */
+
+/* =========================
+   Responsive - Tablet
+========================= */
+
+@media screen and (max-width: 1024px) {
+
+    .my_container {
+        width: 94%;
+    }
+
+    .modal_box {
+        padding: 80px 20px;
+    }
+
+    .modal_text p {
+        width: 75%;
+        text-align: center;
+    }
+
+    .modal_btn_box {
+        width: 40%;
+    }
+
+}
+
+
+/* =========================
+   Responsive - Mobile
+========================= */
+
+@media screen and (max-width: 768px) {
+
+    .my_container {
+        width: 95%;
+    }
+
+    .modal_box {
+        padding: 70px 15px;
+    }
+
+    .check_box {
+        width: 85px;
+        height: 85px;
+        font-size: 42px;
+    }
+
+    .modal_text span {
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .modal_text p {
+        width: 90%;
+        font-size: 13px;
+        line-height: 2;
+        text-align: center;
+    }
+
+    .modal_btn_box {
+        width: 55%;
+    }
+
+    .modal_box a {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+
+}
+
+
+/* =========================
+   Responsive - Small Mobile
+========================= */
+
+@media screen and (max-width: 480px) {
+
+    .my_container {
+        width: 96%;
+    }
+
+    .modal_box {
+        padding: 55px 12px;
+    }
+
+    .check_box {
+        width: 75px;
+        height: 75px;
+        font-size: 36px;
+        margin: 15px 0;
+    }
+
+    .modal_text span {
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .modal_text p {
+        width: 100%;
+        font-size: 12px;
+        line-height: 2.2;
+        margin: 12px 0 20px;
+    }
+
+    .modal_btn_box {
+        width: 85%;
+    }
+
+    .modal_box a {
+        font-size: 12px;
+        padding: 12px 8px;
+    }
+
+}
+
+
+/* =========================
+   Responsive - Extra Small
+========================= */
+
+@media screen and (max-width: 360px) {
+
+    .modal_box {
+        padding: 40px 10px;
+    }
+
+    .check_box {
+        width: 65px;
+        height: 65px;
+        font-size: 30px;
+    }
+
+    .modal_text span {
+        font-size: 13px;
+    }
+
+    .modal_text p {
+        font-size: 11px;
+    }
+
+    .modal_btn_box {
+        width: 100%;
+    }
+
+}
