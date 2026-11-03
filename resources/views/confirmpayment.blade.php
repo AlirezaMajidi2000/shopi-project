@@ -6,20 +6,19 @@
     <title>نهایی کردن خرید | shopi</title>
 
     <!-- style -->
-    <link rel="stylesheet" href="assets/style/confirmpayment.css">
+    <link rel="stylesheet" href="{{ asset('assets/style/confirmpayment.css') }}">
     <!-- style -->
 
     <!-- icons -->
-    <link rel="stylesheet" href="assets/icon/FontAwesome.Pro.6.5.2/css/all.css">
+    <link rel="stylesheet" href="{{ asset('assets/icon/FontAwesome.Pro.6.5.2/css/all.css') }}">
     <!-- icons -->
-
 </head>
 
-<!-- start nav -->
+<body class="font_vazir">
 
+<!-- start nav -->
 <nav class="nav font_vazir">
     <div class="my_container">
-
         <div class="nav_items">
 
             <!-- Logo -->
@@ -56,7 +55,7 @@
                     </div>
 
                     <div class="favorite_box">
-                        <a href="">
+                        <a href="#">
                             <i class="fa-regular fa-heart"></i>
                         </a>
                     </div>
@@ -68,63 +67,62 @@
                     </div>
 
                 </div>
-
             </div>
-
         </div>
-
     </div>
-</nav> 
-
+</nav>
 <!-- end nav -->
 
-<body class="font_vazir">
-    
-    <div class="my_container">
-        <div class="form_box">
-            <div class="form_title">
-                <span>اطلاعات ارسال</span>
-            </div>
-            <form action="">
-                <div class="input_box">
-                    <label for="">نام و نام خانوادگی</label>
-                    <input class="input_name" type="text" max="50" class="font_vazir">
-                    <small></small>
-                </div>
-                <div class="input_box">
-                    <label for="">شماره تماس</label>
-                    <input class="input_phone" type="text" min="11" max="11" class="font_vazir">
-                    <small></small>
-                </div>
-                <div class="input_box">
-                    <label for="">آدرس کامل</label>
-                    <input class="input_address" type="text" class="font_vazir">
-                    <small></small>
-                </div>
-                <!-- انتخاب استان و شهرستان -->
-                <div class="province_box">
-                    <label for="province">استان</label>
-                    <select name="" id="province" class="province_select font_vazir">
-                        <option value="">--انتخاب استان--</option>
-                    </select>
-                </div>
-                <div class="city_box">
-                    <label for="province">شهرستان</label>
-                    <select name="" id="city" class="city_select font_vazir">
-                        <option value="">--انتخاب شهرستان--</option>
-                    </select>
-                </div>
-                <!-- انتخاب استان و شهرستان -->
-            </form>
-            <div class="form_btn_box">
-                <a href="modal.html" class="form_btn">تایید و پرداخت</a>
-            </div>
+<div class="my_container">
+    <div class="form_box">
+        <div class="form_title">
+            <span>اطلاعات ارسال</span>
         </div>
 
-    </div>
+        <form action="#" method="POST">
+            <div class="input_box">
+                <label for="fullname">نام و نام خانوادگی</label>
+                <input id="fullname" class="input_name font_vazir" type="text" maxlength="50">
+                <small></small>
+            </div>
 
-    <script src="assets/js/archive.js"></script>
-    <script src="assets/js/confirmpayment.js"></script>
+            <div class="input_box">
+                <label for="phone">شماره تماس</label>
+                <input id="phone" class="input_phone font_vazir" type="tel" maxlength="11" pattern="09[0-9]{9}">
+                <small></small>
+            </div>
+
+            <div class="input_box">
+                <label for="address">آدرس کامل</label>
+                <input id="address" class="input_address font_vazir" type="text">
+                <small></small>
+            </div>
+
+            <!-- انتخاب استان و شهرستان -->
+            <div class="province_box">
+                <label for="province">استان</label>
+                <select name="province" id="province" class="province_select font_vazir">
+                    <option value="">--انتخاب استان--</option>
+                </select>
+            </div>
+
+            <div class="city_box">
+                <label for="city">شهرستان</label>
+                <select name="city" id="city" class="city_select font_vazir">
+                    <option value="">--انتخاب شهرستان--</option>
+                </select>
+            </div>
+            <!-- انتخاب استان و شهرستان -->
+
+            <div class="form_btn_box">
+                <button type="submit" class="form_btn">تایید و پرداخت</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="{{ asset('assets/js/archive.js') }}"></script>
+<script src="{{ asset('assets/js/confirmpayment.js') }}"></script>
 
 </body>
 </html>

@@ -3,25 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>جزئیات محصول | shopi</title>
 
     <!-- style -->
-    <link rel="stylesheet" href="assets/style/product.css">
+    <link rel="stylesheet" href="{{ asset('assets/style/product.css') }}">
     <!-- style -->
 
     <!-- icon -->
-    <link rel="stylesheet" href="assets/icon/FontAwesome.Pro.6.5.2/css/all.css">
+    <link rel="stylesheet" href="{{ asset('assets/icon/FontAwesome.Pro.6.5.2/css/all.css') }}">
     <!-- icon -->
-
 </head>
-<body>
-    
-    <div class="card" id="productDetail"></div>
 
-    <a href="index.html" class="back"> <i class="fa-solid fa-arrow-right"></i>بازگشت به محصولات</a>
+<body class="font_vazir">
 
+<div class="card" id="productDetail">
+    <!-- محتوای محصول توسط product.js پر می‌شود -->
+</div>
 
-    <script src="assets/js/archive.js" defer></script>
-    <script src="assets/js/product.js" defer></script>
+<a href="{{ url('/') }}" class="back">
+    <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+    بازگشت به محصولات
+</a>
+
+<script src="{{ asset('assets/js/archive.js') }}" defer></script>
+<script src="{{ asset('assets/js/product.js') }}" defer></script>
 </body>
 </html>
