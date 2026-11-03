@@ -14,3 +14,14 @@ Route::get('/shop', function () {
     return view('shop');
 })->name('shop');
 
+Route::get('/product', function () {
+    return view('product');
+})->name('product');
+
+Route::get('/confirmpayment', function () {
+    return view('confirmpayment');
+})->name('confirmpayment');
+
+Route::get('/modal', function () {
+    return view('modal');
+})->name('modal');
