@@ -125,7 +125,7 @@
 
             <div class="products_title">
                 <h2>پیشنهادهای ویژه</h2>
-                <a href="{{ route('shop') }}">
+                <a href="{{ route('home') }}">
                     مشاهده همه
                     <i class="fa-solid fa-angle-left"></i>
                 </a>

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
-use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -82,8 +81,9 @@ class CartController extends Controller
 
     private function getOrCreateCart()
     {
-        return Cart::firstOrCreate([
-            'user_id' => Auth::id(),
-        ]);
+        return Cart::where('user_id', Auth::id())
+            ->latest()
+            ->first()
+            ?? Cart::create(['user_id' => Auth::id()]);
     }
 }

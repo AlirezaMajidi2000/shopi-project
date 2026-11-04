@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CartController;
 
 Route::get('/', [ProductController::class, 'index'])->name('home');
 
@@ -17,20 +18,15 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-});
 
-Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
     Route::get('/shop', [CartController::class, 'index'])->name('shop');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
     Route::patch('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+
+    Route::get('/confirmpayment', [PaymentController::class, 'checkout'])->name('confirmpayment');
+    Route::post('/payment', [PaymentController::class, 'store'])->name('payment.store');
+    Route::get('/payment/success/{id}', [PaymentController::class, 'success'])->name('payment.success');
 });
-
-Route::get('/confirmpayment', function () {
-    return view('confirmpayment');
-})->name('confirmpayment');
-
-Route::get('/modal', function () {
-    return view('modal');
-})->name('modal');

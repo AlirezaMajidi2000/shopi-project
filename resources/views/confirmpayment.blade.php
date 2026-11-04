@@ -5,36 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نهایی کردن خرید | shopi</title>
 
-    <!-- style -->
     <link rel="stylesheet" href="{{ asset('assets/style/confirmpayment.css') }}">
-    <!-- style -->
-
-    <!-- icons -->
     <link rel="stylesheet" href="{{ asset('assets/icon/FontAwesome.Pro.6.5.2/css/all.css') }}">
-    <!-- icons -->
 </head>
 
 <body class="font_vazir">
 
-<!-- start nav -->
 <nav class="nav font_vazir">
     <div class="my_container">
         <div class="nav_items">
 
-            <!-- Logo -->
             <div class="logo">
-                <span class="logo_text font_saleh">شاپی</span>
+                <a href="{{ route('home') }}">
+                    <span class="logo_text font_saleh">شاپی</span>
+                </a>
             </div>
 
-            <!-- Hamburger Button -->
             <button class="menu_toggle" aria-label="باز کردن منو" aria-expanded="false">
                 <i class="fa-solid fa-bars"></i>
             </button>
 
-            <!-- Menu Content -->
             <div class="nav_menu">
 
-                <!-- Search -->
                 <div class="search_box">
                     <label class="search">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -47,11 +39,10 @@
                     </label>
                 </div>
 
-                <!-- Navigation Links -->
                 <div class="nav_links">
 
                     <div class="login_box">
-                        <a href="login.html" class="login_link">ورود/ثبت نام</a>
+                        <a href="{{ route('login') }}" class="login_link">ورود/ثبت نام</a>
                     </div>
 
                     <div class="favorite_box">
@@ -61,7 +52,7 @@
                     </div>
 
                     <div class="shop_box">
-                        <a href="shop.html">
+                        <a href="{{ route('shop') }}">
                             <i class="fa-regular fa-cart-shopping"></i>
                         </a>
                     </div>
@@ -71,7 +62,6 @@
         </div>
     </div>
 </nav>
-<!-- end nav -->
 
 <div class="my_container">
     <div class="form_box">
@@ -79,40 +69,75 @@
             <span>اطلاعات ارسال</span>
         </div>
 
-        <form action="#" method="POST">
+        {{-- نمایش خطاها --}}
+        @if($errors->any())
+            <div style="color: red; margin-bottom: 1rem;">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('payment.store') }}" method="POST">
+            @csrf
+
             <div class="input_box">
-                <label for="fullname">نام و نام خانوادگی</label>
-                <input id="fullname" class="input_name font_vazir" type="text" maxlength="50">
+                <label for="receiver_name">نام و نام خانوادگی</label>
+                <input
+                    id="receiver_name"
+                    name="receiver_name"
+                    class="input_name font_vazir"
+                    type="text"
+                    value="{{ old('receiver_name') }}"
+                    maxlength="50"
+                    required
+                >
                 <small></small>
             </div>
 
             <div class="input_box">
-                <label for="phone">شماره تماس</label>
-                <input id="phone" class="input_phone font_vazir" type="tel" maxlength="11" pattern="09[0-9]{9}">
+                <label for="receiver_phone">شماره تماس</label>
+                <input
+                    id="receiver_phone"
+                    name="receiver_phone"
+                    class="input_phone font_vazir"
+                    type="tel"
+                    value="{{ old('receiver_phone') }}"
+                    maxlength="11"
+                    pattern="09[0-9]{9}"
+                    required
+                >
                 <small></small>
             </div>
 
             <div class="input_box">
-                <label for="address">آدرس کامل</label>
-                <input id="address" class="input_address font_vazir" type="text">
+                <label for="shipping_address">آدرس کامل</label>
+                <input
+                    id="shipping_address"
+                    name="shipping_address"
+                    class="input_address font_vazir"
+                    type="text"
+                    value="{{ old('shipping_address') }}"
+                    required
+                >
                 <small></small>
             </div>
 
-            <!-- انتخاب استان و شهرستان -->
             <div class="province_box">
                 <label for="province">استان</label>
-                <select name="province" id="province" class="province_select font_vazir">
+                <select name="province" id="province" class="province_select font_vazir" required>
                     <option value="">--انتخاب استان--</option>
                 </select>
             </div>
 
             <div class="city_box">
                 <label for="city">شهرستان</label>
-                <select name="city" id="city" class="city_select font_vazir">
+                <select name="city" id="city" class="city_select font_vazir" required>
                     <option value="">--انتخاب شهرستان--</option>
                 </select>
             </div>
-            <!-- انتخاب استان و شهرستان -->
 
             <div class="form_btn_box">
                 <button type="submit" class="form_btn">تایید و پرداخت</button>
