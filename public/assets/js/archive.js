@@ -3158,7 +3158,23 @@ const addressRegex = /^[\u0600-\u06FFa-zA-Z0-9\s،,.\-پلاک/]{5,200}$/;
 // اعتبارسنجی آدرس
 
 // منوی برگری
+// اعتبارسنجی نام کاربری
 
+const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+
+// اعتبارسنجی نام کاربری
+
+// اعتبارسنجی ایمیل
+
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+// اعتبارسنجی ایمیل
+
+// اعتبارسنجی پسوورد
+
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&#]{8,}$/;
+
+// اعتبارسنجی پسوورد
 
 const menuToggle = document.querySelector('.menu_toggle');
 const navMenu = document.querySelector('.nav_menu');

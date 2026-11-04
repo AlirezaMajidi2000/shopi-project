@@ -3,24 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جزئیات محصول | shopi</title>
+    <title>{{ $product->name }} | shopi</title>
 
-    <!-- style -->
     <link rel="stylesheet" href="{{ asset('assets/style/product.css') }}">
-    <!-- style -->
-
-    <!-- icon -->
     <link rel="stylesheet" href="{{ asset('assets/icon/FontAwesome.Pro.6.5.2/css/all.css') }}">
-    <!-- icon -->
 </head>
 
 <body class="font_vazir">
 
 <div class="card" id="productDetail">
-    <!-- محتوای محصول توسط product.js پر می‌شود -->
+    <h1>{{ $product->name }}</h1>
+
+    @if($product->image)
+        <img src="{{ asset('assets/images/' . $product->image) }}" alt="{{ $product->name }}">
+    @endif
+
+    <p>{{ $product->description }}</p>
+
+    <p>
+        قیمت:
+        @if($product->discount_price)
+            <del>{{ number_format($product->price) }} تومان</del>
+            <strong>{{ number_format($product->discount_price) }} تومان</strong>
+        @else
+            <strong>{{ number_format($product->price) }} تومان</strong>
+        @endif
+    </p>
+
+    <p>موجودی: {{ $product->stock }} عدد</p>
 </div>
 
-<a href="{{ url('/') }}" class="back">
+<a href="{{ route('home') }}" class="back">
     <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
     بازگشت به محصولات
 </a>

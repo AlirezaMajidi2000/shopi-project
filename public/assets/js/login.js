@@ -1,38 +1,38 @@
 let loginForm = document.getElementById("loginForm");
-
-let usernameInput = document.getElementById("username");
+let emailInput = document.getElementById("email");
 let passwordInput = document.getElementById("password");
 
-
-let usernameMsg = document.querySelector(".username_msg");
+let emailMsg = document.querySelector(".email_msg");
 let passwordMsg = document.querySelector(".password_msg");
 
-let loginMessage = document.getElementById("loginMessage");
 let togglePassword = document.getElementById("togglePassword");
 
-let nameRegex = /^[A-Za-z0-9._]{3,30}$/;
-let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/;
+let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/;
 
 
 // نمایش یا مخفی کردن رمز عبور
-togglePassword.addEventListener("click", function () {
-    let isPassword = passwordInput.type === "password";
+if (togglePassword) {
+    togglePassword.addEventListener("click", function () {
+        let isPassword = passwordInput.type === "password";
 
-    passwordInput.type = isPassword ? "text" : "password";
+        passwordInput.type = isPassword ? "text" : "password";
 
-    this.innerHTML = isPassword
-        ? '<i class="fa-regular fa-eye-slash"></i>'
-        : '<i class="fa-regular fa-eye"></i>';
+        this.innerHTML = isPassword
+            ? '<i class="fa-regular fa-eye-slash"></i>'
+            : '<i class="fa-regular fa-eye"></i>';
 
-    this.setAttribute(
-        "aria-label",
-        isPassword ? "مخفی کردن رمز عبور" : "نمایش رمز عبور"
-    );
-});
+        this.setAttribute(
+            "aria-label",
+            isPassword ? "مخفی کردن رمز عبور" : "نمایش رمز عبور"
+        );
+    });
+}
 
 
 // نمایش خطای یک فیلد
 function showFieldError(element, message) {
+    if (!element) return;
     element.textContent = message;
     element.classList.remove("d-none", "text-green");
     element.classList.add("d-block", "text-red");
@@ -41,6 +41,7 @@ function showFieldError(element, message) {
 
 // نمایش موفقیت یک فیلد
 function showFieldSuccess(element) {
+    if (!element) return;
     element.textContent = "موفق: ورودی مجاز است.";
     element.classList.remove("d-none", "text-red");
     element.classList.add("d-block", "text-green");
@@ -49,38 +50,28 @@ function showFieldSuccess(element) {
 
 // پاک کردن پیام یک فیلد
 function clearFieldError(element) {
+    if (!element) return;
     element.textContent = "";
     element.classList.add("d-none");
     element.classList.remove("d-block", "text-red", "text-green");
 }
 
 
-// پاک کردن پیام کلی
-function clearLoginMessage() {
-    loginMessage.textContent = "";
-    loginMessage.classList.add("d-none");
-    loginMessage.classList.remove("error", "success");
-}
+// اعتبارسنجی ایمیل
+function validateEmail() {
+    let email = emailInput.value.trim();
 
-
-// اعتبارسنجی نام کاربری
-function validateUsername() {
-    let username = usernameInput.value.trim();
-
-    if (username === "") {
-        showFieldError(usernameMsg, "نام کاربری را وارد کنید.");
+    if (email === "") {
+        showFieldError(emailMsg, "ایمیل را وارد کنید.");
         return false;
     }
 
-    if (!nameRegex.test(username)) {
-        showFieldError(
-            usernameMsg,
-            "نام کاربری باید ۳ تا ۳۰ کاراکتر و شامل حروف انگلیسی، اعداد، نقطه یا زیرخط باشد."
-        );
+    if (!emailRegex.test(email)) {
+        showFieldError(emailMsg, "ایمیل نامعتبر است.");
         return false;
     }
 
-    showFieldSuccess(usernameMsg);
+    showFieldSuccess(emailMsg);
     return true;
 }
 
@@ -107,39 +98,25 @@ function validatePassword() {
 }
 
 
-// اعتبارسنجی هنگام تایپ نام کاربری
-usernameInput.addEventListener("input", function () {
-    validateUsername();
-    clearLoginMessage();
-});
-
+// اعتبارسنجی هنگام تایپ ایمیل
+if (emailInput) {
+    emailInput.addEventListener("input", validateEmail);
+}
 
 // اعتبارسنجی هنگام تایپ رمز عبور
-passwordInput.addEventListener("input", function () {
-    validatePassword();
-    clearLoginMessage();
-});
+if (passwordInput) {
+    passwordInput.addEventListener("input", validatePassword);
+}
 
 
-// اعتبارسنجی هنگام ارسال فرم
-loginForm.addEventListener("submit", function (event) {
-    event.preventDefault();
+// اعتبارسنجی هنگام ارسال فرم (فقط برای جلوگیری از ارسال نامعتبر)
+if (loginForm) {
+    loginForm.addEventListener("submit", function (event) {
+        let isEmailValid = validateEmail();
+        let isPasswordValid = validatePassword();
 
-    clearLoginMessage();
-
-    let isUsernameValid = validateUsername();
-    let isPasswordValid = validatePassword();
-
-    if (!isUsernameValid || !isPasswordValid) {
-        return;
-    }
-
-    // ورود آزمایشی
-    loginMessage.textContent = "ورود موفق بود؛ در حال انتقال...";
-    loginMessage.classList.remove("d-none", "error");
-    loginMessage.classList.add("success");
-
-    setTimeout(function () {
-        window.location.href = "formA01.html";
-    }, 700);
-});
+        if (!isEmailValid || !isPasswordValid) {
+            event.preventDefault();  // فقط اگه نامعتبر بود، جلوگیری کن
+        }
+    });
+}

@@ -39,7 +39,7 @@ function renderProducts(productsList = products) {
     });
 }
 
-renderProducts();
+// renderProducts();
 
 // فیلتر کردن محصولات
 
