@@ -74,49 +74,93 @@
             <h2>سبد خرید</h2>
         </div>
 
-        <table class="shop_items">
-            <thead>
-            <tr>
-                <th>محصول</th>
-                <th>تعداد</th>
-                <th>قیمت</th>
-                <th>عملیات</th>
-            </tr>
-            </thead>
-            <tbody class="cart_items">
+        {{-- لیست محصولات با ساختار div سازگار با CSS --}}
+        <div class="shop_items">
             @forelse($items as $item)
-                <tr>
-                    <td>{{ $item->product->name }}</td>
-                    <td>
-                        <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('PATCH')
-                            <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" style="width:60px;">
-                            <button type="submit">به‌روزرسانی</button>
-                        </form>
-                    </td>
-                    <td>{{ number_format($item->unit_price * $item->quantity) }} تومان</td>
-                    <td>
+                <div class="selected_item_box">
+
+                    <div class="selected_item_group">
+
+                        <div class="selected_item_img">
+                            <img src="{{ asset('assets/images/' . $item->product->image) }}"
+                                 alt="{{ $item->product->name }}">
+                        </div>
+
+                        <div class="selected_item_info">
+
+                            <div class="selected_item_text">
+                                <span>{{ $item->product->name }}</span>
+                                <span>{{ number_format($item->unit_price) }} تومان</span>
+                            </div>
+
+                            <div class="selected_item_button">
+
+                                {{-- دکمه افزایش --}}
+                                <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="quantity" value="{{ $item->quantity + 1 }}">
+                                    <button type="submit" title="افزایش">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </form>
+
+                                <span>{{ $item->quantity }}</span>
+
+                                {{-- دکمه کاهش --}}
+                                <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="quantity" value="{{ max(1, $item->quantity - 1) }}">
+                                    <button type="submit" title="کاهش">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {{-- دکمه حذف --}}
+                    <div class="selected_item_button">
                         <form action="{{ route('cart.remove', $item->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit">حذف</button>
+                            <button type="submit" class="delete_item_btn" title="حذف">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
                         </form>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="4">سبد خرید خالی است.</td>
-                </tr>
-            @endforelse
-            </tbody>
-        </table>
+                    </div>
 
+                </div>
+            @empty
+                <div class="selected_item_box" style="justify-content:center; padding: 20px;">
+                    <span>سبد خرید خالی است.</span>
+                </div>
+            @endforelse
+        </div>
+
+        {{-- بخش تخفیف با کلاس‌های موجود در CSS --}}
         <div class="total_items">
 
             <div class="total_item">
                 <span class="color_secondary">جمع کل محصولات</span>
                 <span class="cart_subtotal">{{ number_format($cart->subtotal) }} تومان</span>
+            </div>
+
+            <div class="discount_items">
+                <span class="color_secondary">کد تخفیف</span>
+                <div class="discount_input_box">
+                    <input
+                        type="text"
+                        class="discount_input font_vazir"
+                        placeholder="کد تخفیف"
+                        maxlength="30"
+                    >
+                    <button type="button" class="discount_btn">اعمال</button>
+                </div>
             </div>
 
             <div class="cost_items">
@@ -142,8 +186,19 @@
     </div>
 </div>
 
+{{-- داده‌های اولیه برای JS --}}
+<script>
+    window.__SHOP_DATA__ = {
+        cart: {
+            items: @json($items),
+            subtotal: {{ (int) $cart->subtotal }},
+            total: {{ (int) $cart->total }}
+        }
+    };
+</script>
+
 <script src="{{ asset('assets/js/archive.js') }}" defer></script>
-<script src="{{ asset('assets/js/shop.js') }}" defer></script>
+<script src="{{ asset('assets/js/shop.js') }}?v={{ time() }}" defer></script>
 
 </body>
 </html>
