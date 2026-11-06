@@ -49,9 +49,27 @@
                 <!-- Navigation Links -->
                 <div class="nav_links">
 
-                    <div class="login_box">
-                        <a href="{{ route('login') }}" class="login_link">ورود/ثبت نام</a>
-                    </div>
+                    @auth
+                        {{-- کاربر لاگین کرده: نام کاربر + دکمه خروج --}}
+                        <div class="login_box">
+                            <span class="login_link">{{ auth()->user()->name ?? auth()->user()->username }}</span>
+                        </div>
+
+                        <div class="logout_box">
+                            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="logout_btn" title="خروج از حساب">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                    <span class="font_vazir">خروج</span>
+                                </button>
+                            </form>
+                        </div>
+                    @else
+                        {{-- کاربر مهمان: لینک ورود/ثبت نام --}}
+                        <div class="login_box">
+                            <a href="{{ route('login') }}" class="login_link">ورود/ثبت نام</a>
+                        </div>
+                    @endauth
 
                     <div class="favorite_box">
                         <a href="#">
@@ -165,10 +183,7 @@
 </section>
 <!-- end products -->
 
-<script src="{{ asset('assets/js/archive.js') }}" defer></script>
-<script src="{{ asset('assets/js/app.js') }}" defer></script>
-
-</body>
+{{-- پیام‌های موفقیت/خطا --}}
 @if(session('success'))
     <div style="background: #d4edda; color: #155724; padding: 1rem; margin: 1rem; border-radius: 5px;">
         {{ session('success') }}
@@ -180,4 +195,9 @@
         {{ session('error') }}
     </div>
 @endif
+
+<script src="{{ asset('assets/js/archive.js') }}" defer></script>
+<script src="{{ asset('assets/js/app.js') }}" defer></script>
+
+</body>
 </html>
