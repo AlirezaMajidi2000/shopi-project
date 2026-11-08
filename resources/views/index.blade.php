@@ -80,6 +80,7 @@
                     <div class="shop_box">
                         <a href="{{ route('shop') }}">
                             <i class="fa-regular fa-cart-shopping"></i>
+                                <span class="cart_badge">{{ $cartCount }}</span>
                         </a>
                     </div>
 
