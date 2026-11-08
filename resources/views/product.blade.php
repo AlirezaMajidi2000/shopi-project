@@ -31,7 +31,16 @@
     </p>
 
     <p>موجودی: {{ $product->stock }} عدد</p>
+    <div class="product_btn">
+        <form action="{{ route('cart.add') }}" method="POST">
+            @csrf
+            <input type="hidden" name="product_id" value="{{ $product->id }}">
+            <button type="submit" class="product_add_btn">افزودن به سبد خرید</button>
+        </form>
+    </div>
+
 </div>
+
 
 <a href="{{ route('home') }}" class="back">
     <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
