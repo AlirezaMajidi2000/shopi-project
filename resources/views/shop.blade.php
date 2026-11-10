@@ -13,6 +13,7 @@
 
 <nav class="nav font_vazir">
     <div class="my_container">
+
         <div class="nav_items">
 
             <div class="logo">
@@ -54,8 +55,9 @@
                     <div class="shop_box">
                         <a href="{{ route('shop') }}">
                             <i class="fa-regular fa-cart-shopping"></i>
-                            <span class="cart_badge">{{ $cartCount }}</span>
-
+                            @if(($cartCount ?? 0) > 0)
+                                <span class="cart_badge">{{ $cartCount }}</span>
+                            @endif
                         </a>
                     </div>
 
@@ -68,6 +70,27 @@
 </nav>
 
 <div class="my_container">
+
+
+    <div class="my_container">
+
+        @if(session('success'))
+            <div class="alert alert-success" style="background:#d4edda; color:#155724; padding:12px 16px; margin:16px 0; border-radius:8px; border:1px solid #c3e6cb;">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger" style="background:#f8d7da; color:#721c24; padding:12px 16px; margin:16px 0; border-radius:8px; border:1px solid #f5c6cb;">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <div class="shop_items_box">
+            ...
+        </div>
+    </div>
+
     <div class="shop_items_box">
         <div class="shop_title">
             <a href="{{ route('home') }}" aria-label="بازگشت به فروشگاه">
@@ -76,7 +99,7 @@
             <h2>سبد خرید</h2>
         </div>
 
-        {{-- لیست محصولات با ساختار div سازگار با CSS --}}
+
         <div class="shop_items">
             @forelse($items as $item)
                 <div class="selected_item_box">
@@ -97,7 +120,6 @@
 
                             <div class="selected_item_button">
 
-                                {{-- دکمه افزایش --}}
                                 <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('PATCH')
@@ -109,7 +131,6 @@
 
                                 <span>{{ $item->quantity }}</span>
 
-                                {{-- دکمه کاهش --}}
                                 <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('PATCH')
@@ -125,7 +146,6 @@
 
                     </div>
 
-                    {{-- دکمه حذف --}}
                     <div class="selected_item_button">
                         <form action="{{ route('cart.remove', $item->id) }}" method="POST" style="display:inline;">
                             @csrf
@@ -144,7 +164,6 @@
             @endforelse
         </div>
 
-        {{-- بخش تخفیف با کلاس‌های موجود در CSS --}}
         <div class="total_items">
 
             <div class="total_item">
@@ -154,20 +173,44 @@
 
             <div class="discount_items">
                 <span class="color_secondary">کد تخفیف</span>
-                <div class="discount_input_box">
-                    <input
-                        type="text"
-                        class="discount_input font_vazir"
-                        placeholder="کد تخفیف"
-                        maxlength="30"
-                    >
-                    <button type="button" class="discount_btn">اعمال</button>
-                </div>
+
+                @if($cart->discount_percent > 0)
+                    <div class="discount_input_box">
+                        <span class="text_success">تخفیف {{ $cart->discount_percent }}٪ اعمال شد</span>
+
+                        <form action="{{ route('cart.discount.remove') }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="discount_btn">حذف کد</button>
+                        </form>
+                    </div>
+                @else
+                    <form action="{{ route('cart.discount') }}" method="POST" class="discount_input_box">
+                        @csrf
+                        <input
+                            type="text"
+                            name="code"
+                            class="discount_input font_vazir"
+                            placeholder="کد تخفیف"
+                            maxlength="30"
+                        >
+                        <button type="submit" class="discount_btn">اعمال</button>
+                    </form>
+                @endif
             </div>
+
+            @if($cart->discount_percent > 0)
+                <div class="total_item">
+                    <span class="color_secondary">تخفیف ({{ $cart->discount_percent }}٪)</span>
+                    <span class="text_success">- {{ number_format($cart->discount_amount) }} تومان</span>
+                </div>
+            @endif
 
             <div class="cost_items">
                 <span class="color_secondary">هزینه ارسال</span>
-                <span class="shipping_cost">0 تومان</span>
+                <span class="shipping_cost">
+                    {{ number_format($items->count() > 0 ? 50000 : 0) }} تومان
+                </span>
             </div>
 
         </div>

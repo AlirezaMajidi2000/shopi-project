@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DiscountCode;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -14,8 +15,25 @@ class CartController extends Controller
         $cart = $this->getOrCreateCart();
 
         $items = $cart->items()->with('product')->get();
+        $subtotal = $items->sum(fn ($item) => $item->unit_price * $item->quantity);
+        $discountPercent = $cart->discount_percent ?? 0;
+        $discountAmount  = $subtotal * $discountPercent / 100;
+        $shipping = $items->count() > 0 ? 50000 : 0;
+        $total = $subtotal - $discountAmount + $shipping;
+        $cart->update([
+            'subtotal' => $subtotal,
+            'total'    => $total,
+        ]);
 
-        return view('shop', compact('cart', 'items'));
+        return view('shop', compact(
+            'cart',
+            'items',
+            'subtotal',
+            'discountPercent',
+            'discountAmount',
+            'shipping',
+            'total'
+        ));
     }
 
     public function add(Request $request)
@@ -85,5 +103,51 @@ class CartController extends Controller
             ->latest()
             ->first()
             ?? Cart::create(['user_id' => Auth::id()]);
+    }
+
+
+
+    public function applyDiscount(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string|max:50',
+        ]);
+
+        $cart = $this->getOrCreateCart();
+
+        if ($cart->items()->count() === 0) {
+            return back()->with('error', 'سبد خرید شما خالی است.');
+        }
+
+        $code = DiscountCode::where('code', strtoupper(trim($request->code)))->first();
+
+        if (! $code) {
+            return back()->with('error', 'کد تخفیف معتبر نیست.');
+        }
+
+        if (! $code->isActive()) {
+            return back()->with('error', 'این کد تخفیف منقضی یا استفاده شده است.');
+        }
+
+        $cart->update([
+            'discount_code_id' => $code->id,
+            'discount_percent' => $code->percent,
+        ]);
+
+//        $code->markAsUsed();
+
+        return back()->with('success', "تخفیف {$code->percent} درصدی اعمال شد.");
+    }
+
+    public function removeDiscount()
+    {
+        $cart = $this->getOrCreateCart();
+
+        $cart->update([
+            'discount_code_id' => null,
+            'discount_percent' => 0,
+        ]);
+
+        return back()->with('success', 'کد تخفیف حذف شد.');
     }
 }

@@ -11,6 +11,8 @@ class Cart extends Model
 
     protected $fillable = [
         'user_id',
+        'discount_code_id',
+        'discount_percent',
     ];
 
     public function user()
@@ -35,6 +37,11 @@ class Cart extends Model
         return $this->hasOne(Payment::class);
     }
 
+    public function discountCode()
+    {
+        return $this->belongsTo(DiscountCode::class);
+    }
+
     public function getSubtotalAttribute()
     {
         return $this->items->sum(function ($item) {
@@ -42,8 +49,15 @@ class Cart extends Model
         });
     }
 
+    public function getDiscountAmountAttribute()
+    {
+        return $this->subtotal * ($this->discount_percent ?? 0) / 100;
+    }
+
     public function getTotalAttribute()
     {
-        return $this->subtotal;
+        $shipping = $this->items->count() > 0 ? 50000 : 0;
+
+        return $this->subtotal - $this->discount_amount + $shipping;
     }
 }

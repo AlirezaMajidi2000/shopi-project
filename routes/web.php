@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
     Route::patch('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 
+    Route::post('/cart/discount', [CartController::class, 'applyDiscount'])->name('cart.discount');
+    Route::delete('/cart/discount', [CartController::class, 'removeDiscount'])->name('cart.discount.remove');
+
     Route::get('/confirmpayment', [PaymentController::class, 'checkout'])->name('confirmpayment');
     Route::post('/payment', [PaymentController::class, 'store'])->name('payment.store');
     Route::get('/payment/success/{id}', [PaymentController::class, 'success'])->name('payment.success');

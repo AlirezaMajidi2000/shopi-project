@@ -36,14 +36,21 @@ class PaymentController extends Controller
             'city' => 'required|string|max:255',
         ]);
 
-        $subtotal = $cart->subtotal;
-        $shippingCost = 0;
-        $total = $subtotal + $shippingCost;
+        $subtotal = $cart->items->sum(fn ($item) => $item->unit_price * $item->quantity);
+
+        $discountPercent = $cart->discount_percent ?? 0;
+        $discountAmount  = $subtotal * $discountPercent / 100;
+
+        $shippingCost = 50000;
+        $total = $subtotal - $discountAmount + $shippingCost;
+
 
         $payment = Payment::create([
             'cart_id' => $cart->id,
             'order_number' => 'ORD-' . strtoupper(uniqid()),
             'subtotal' => $subtotal,
+            'discount_amount' => $discountAmount,
+            'discount_percent' => $discountPercent,
             'shipping_cost' => $shippingCost,
             'total' => $total,
             'status' => 'pending',
@@ -54,9 +61,8 @@ class PaymentController extends Controller
             'city' => $validated['city'],
         ]);
 
-        $cart->items()->delete();
-
-        Cart::create(['user_id' => Auth::id()]);
+        // $cart->items()->delete();
+        // Cart::create(['user_id' => Auth::id()]);
 
         return redirect()->route('payment.success', $payment->id);
     }
@@ -67,6 +73,24 @@ class PaymentController extends Controller
 
         if ($payment->cart->user_id !== Auth::id()) {
             abort(403);
+        }
+
+        $cart = $payment->cart;
+
+        if ($cart->discountCode && ! $cart->discountCode->is_used) {
+            $cart->discountCode->markAsUsed();
+        }
+
+        if ($cart->items()->count() > 0) {
+            $cart->items()->delete();
+            $cart->update([
+                'discount_code_id' => null,
+                'discount_percent' => 0,
+                'subtotal' => 0,
+                'total' => 0,
+            ]);
+
+            Cart::create(['user_id' => Auth::id()]);
         }
 
         return view('modal', compact('payment'));
