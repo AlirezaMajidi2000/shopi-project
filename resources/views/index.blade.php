@@ -50,7 +50,7 @@
                 <div class="nav_links">
 
                     @auth
-                        {{-- کاربر لاگین کرده: نام کاربر + دکمه خروج --}}
+
                         <div class="login_box">
                             <span class="login_link">{{ auth()->user()->name ?? auth()->user()->username }}</span>
                         </div>
@@ -65,7 +65,6 @@
                             </form>
                         </div>
                     @else
-                        {{-- کاربر مهمان: لینک ورود/ثبت نام --}}
                         <div class="login_box">
                             <a href="{{ route('login') }}" class="login_link">ورود/ثبت نام</a>
                         </div>
