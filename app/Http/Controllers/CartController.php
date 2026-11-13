@@ -83,12 +83,22 @@ class CartController extends Controller
     }
 
 
-    public function remove($id)
+    public function remove(Request $request, $id)
     {
         $cart = $this->getOrCreateCart();
         $item = $cart->items()->findOrFail($id);
         $item->delete();
 
+        if ($request->expectsJson()) {
+            $items = $cart->items()->with('product')->get();
+
+            return response()->json([
+                'success'    => true,
+                'message'    => 'این آیتم با موفقیت حذف شد.',
+                'cart_count' => $cart->items()->sum('quantity'),
+                'html'       => view('partials.cart_items', compact('items'))->render(),
+            ]);
+        }
         return back()->with('success', 'محصول از سبد حذف شد.');
     }
 
@@ -102,14 +112,31 @@ class CartController extends Controller
         $item = $cart->items()->findOrFail($id);
 
         if ($item->product->stock < $request->quantity) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'موجودی محصول کافی نیست.',
+                ], 422);
+            }
             return back()->with('error', 'موجودی محصول کافی نیست.');
         }
 
         $item->update([
             'quantity' => $request->quantity,
         ]);
+        if ($request->expectsJson()) {
+            $items = $cart->items()->with('product')->get();
+
+            return response()->json([
+                'success'    => true,
+                'message'    => 'تعداد محصول به‌روزرسانی شد.',
+                'cart_count' => $cart->items()->sum('quantity'),
+                'html'       => view('partials.cart_items', compact('items'))->render(),
+            ]);
+        }
 
         return back()->with('success', 'تعداد محصول به‌روزرسانی شد.');
+
     }
 
     private function getOrCreateCart()

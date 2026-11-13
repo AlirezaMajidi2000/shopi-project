@@ -56,7 +56,7 @@
                         <a href="{{ route('shop') }}">
                             <i class="fa-regular fa-cart-shopping"></i>
                             @if(($cartCount ?? 0) > 0)
-                                <span class="cart_badge">{{ $cartCount }}</span>
+                                <span class="cart_badge" id="cartCount">{{ $cartCount }}</span>
                             @endif
                         </a>
                     </div>
@@ -100,69 +100,7 @@
         </div>
 
 
-        <div class="shop_items">
-            @forelse($items as $item)
-                <div class="selected_item_box">
-
-                    <div class="selected_item_group">
-
-                        <div class="selected_item_img">
-                            <img src="{{ asset('assets/images/' . $item->product->image) }}"
-                                 alt="{{ $item->product->name }}">
-                        </div>
-
-                        <div class="selected_item_info">
-
-                            <div class="selected_item_text">
-                                <span>{{ $item->product->name }}</span>
-                                <span>{{ number_format($item->unit_price) }} تومان</span>
-                            </div>
-
-                            <div class="selected_item_button">
-
-                                <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="quantity" value="{{ $item->quantity + 1 }}">
-                                    <button type="submit" title="افزایش">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
-                                </form>
-
-                                <span>{{ $item->quantity }}</span>
-
-                                <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="quantity" value="{{ max(1, $item->quantity - 1) }}">
-                                    <button type="submit" title="کاهش">
-                                        <i class="fa-solid fa-minus"></i>
-                                    </button>
-                                </form>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="selected_item_button">
-                        <form action="{{ route('cart.remove', $item->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="delete_item_btn" title="حذف">
-                                <i class="fa-regular fa-trash-can"></i>
-                            </button>
-                        </form>
-                    </div>
-
-                </div>
-            @empty
-                <div class="selected_item_box" style="justify-content:center; padding: 20px;">
-                    <span>سبد خرید خالی است.</span>
-                </div>
-            @endforelse
-        </div>
+        @include('partials.cart_items', ['$items' => $items])
 
         <div class="total_items">
 
@@ -244,6 +182,10 @@
 
 <script src="{{ asset('assets/js/archive.js') }}" defer></script>
 <script src="{{ asset('assets/js/shop.js') }}?v={{ time() }}" defer></script>
+
+
+
+
 
 </body>
 </html>

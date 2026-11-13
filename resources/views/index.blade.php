@@ -82,7 +82,7 @@
                     <div class="shop_box">
                         <a href="{{ route('shop') }}">
                             <i class="fa-regular fa-cart-shopping"></i>
-                                <span class="cart_badge">{{ $cartCount }}</span>
+                                <span class="cart_badge" id="cartCount">{{ $cartCount }}</span>
                         </a>
                     </div>
 
@@ -176,55 +176,8 @@
 <script src="{{ asset('assets/js/archive.js') }}" defer></script>
 <script src="{{ asset('assets/js/app.js') }}" defer></script>
 
-<script>
+<script src="{{ asset('assets/js/shop.js') }}" defer></script>
 
-    document.addEventListener('submit', function (e) {
-        const form = e.target;
-        if (!form.classList.contains('add-to-cart-form')) return;
-
-        e.preventDefault();
-
-        const formData = new FormData(form);
-        const submitBtn = form.querySelector('button[type="submit"]');
-
-        submitBtn.disabled = true;
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'در حال افزودن...';
-
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json',
-            },
-        })
-            .then(res => {
-                if (!res.ok) throw new Error('خطا در سرور');
-                return res.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    alert(data.message);
-
-                    const cartCountEl = document.getElementById('cartCount');
-                    if (cartCountEl && data.cart_count !== undefined) {
-                        cartCountEl.textContent = data.cart_count;
-                    }
-                }
-            })
-            .catch(err => {
-                alert('خطا در افزودن محصول');
-                console.error(err);
-            })
-            .finally(() => {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
-            });
-    });
-
-</script>
 </body>
 
 </html>
