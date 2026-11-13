@@ -15,7 +15,7 @@
         </div>
 
         <div class="product_btn">
-            <form action="{{ route('cart.add') }}" method="POST">
+            <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <button type="submit" class="product_add_btn">افزودن به سبد خرید</button>

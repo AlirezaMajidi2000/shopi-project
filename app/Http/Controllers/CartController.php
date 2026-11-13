@@ -40,7 +40,7 @@ class CartController extends Controller
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'nullable|integer|min:1',
+            'quantity'   => 'nullable|integer|min:1',
         ]);
 
         $cart = $this->getOrCreateCart();
@@ -48,6 +48,12 @@ class CartController extends Controller
         $quantity = $request->input('quantity', 1);
 
         if ($product->stock < $quantity) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'موجودی محصول کافی نیست.',
+                ], 422);
+            }
             return back()->with('error', 'موجودی محصول کافی نیست.');
         }
 
@@ -60,13 +66,22 @@ class CartController extends Controller
         } else {
             $cart->items()->create([
                 'product_id' => $product->id,
-                'quantity' => $quantity,
+                'quantity'   => $quantity,
                 'unit_price' => $product->final_price,
+            ]);
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success'    => true,
+                'message'    => 'محصول به سبد اضافه شد',
+                'cart_count' => $cart->items()->sum('quantity'),
             ]);
         }
 
         return back()->with('success', 'محصول به سبد اضافه شد.');
     }
+
 
     public function remove($id)
     {
